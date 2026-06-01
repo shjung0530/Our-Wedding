@@ -29,13 +29,13 @@
     }
     #locationMapImg {
       width: 100% !important;
-      max-width: none !important;
-      height: auto !important;
+      max-width: 100% !important;
+      height: 100% !important;
       display: block;
     }
 
-    /* 2. Gallery Section 사진 4장만 보여주고 나머지는 숨김 처리 */
-    #galleryGrid.gallery-collapsed > *:nth-child(n+5) {
+    /* 2. Gallery Section 사진 6장만 보여주고 나머지는 숨김 처리 */
+    #galleryGrid.gallery-collapsed > *:nth-child(n+7) {
       display: none !important;
     }
     .gallery-more-wrap {
@@ -194,7 +194,7 @@
           <p class="location__tel" id="locationTel"></p>
         </div>
         <button class="btn btn--text location__copy animate-item" data-animate="fade-up" id="copyAddressBtn">
-          <svg width="16" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="15" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
           주소 복사
         </button>
         <div class="location__map animate-item" data-animate="scale-in">
@@ -262,10 +262,10 @@
         });
       }
 
-      // script.js 에서 동적으로 사진이 로딩될 때 사진 개수가 4개 이하라면 굳이 더보기 버튼이 필요없으므로 숨김 처리
+      // script.js 에서 동적으로 사진이 로딩될 때 사진 개수가 6개 이하라면 굳이 더보기 버튼이 필요없으므로 숨김 처리
       if(galleryGrid) {
         const observer = new MutationObserver(function() {
-          if (galleryGrid.children.length > 0 && galleryGrid.children.length <= 4) {
+          if (galleryGrid.children.length > 0 && galleryGrid.children.length <= 6) {
             galleryMoreWrap.style.display = "none";
             galleryGrid.classList.remove("gallery-collapsed");
           }
