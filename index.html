@@ -20,18 +20,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css">
-   <!-- ✨ 추가된 스타일: 갤러리 압축 및 지도 크기 확대 ✨ -->
+  
+  <!-- ✨ 추가된 스타일: 갤러리 압축 및 지도 크기 확대 ✨ -->
   <style>
-    /* 1. Location Section 지도 이미지 넓게 설정 */
+    /* 1. Location Section 지도 이미지가 원본 비율을 유지하며 다 보이도록 설정 */
     .location__map {
       width: 100% !important;
-      max-width: 100% !important;
+      text-align: center;
     }
     #locationMapImg {
       width: 100% !important;
       max-width: 100% !important;
-      height: 100% !important;
+      height: auto !important;
+      object-fit: contain !important;
       display: block;
+      margin: 0 auto;
     }
 
     /* 2. Gallery Section 사진 6장만 보여주고 나머지는 숨김 처리 */
@@ -58,6 +61,7 @@
       background-color: #f9f9f9;
     }
   </style>
+
   <script src="config.js"></script>
 </head>
 <body>
@@ -173,6 +177,7 @@
     <section class="section gallery" id="gallery">
       <div class="section__inner">
         <h2 class="section__title animate-item" data-animate="fade-up">갤러리</h2>
+        
         <!-- ✨ 수정됨: gallery-collapsed 클래스 추가 ✨ -->
         <div class="gallery__grid gallery-collapsed" id="galleryGrid"></div>
         
@@ -180,6 +185,7 @@
         <div class="gallery-more-wrap animate-item" data-animate="fade-up" id="galleryMoreWrap">
           <button class="gallery-more-btn" id="galleryMoreBtn">사진 더보기</button>
         </div>
+
       </div>
     </section>
 
@@ -194,7 +200,7 @@
           <p class="location__tel" id="locationTel"></p>
         </div>
         <button class="btn btn--text location__copy animate-item" data-animate="fade-up" id="copyAddressBtn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <svg width="16" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="15" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
           주소 복사
         </button>
         <div class="location__map animate-item" data-animate="scale-in">
@@ -247,7 +253,8 @@
   </main>
 
   <script src="script.js"></script>
-    <!-- ✨ 추가된 스크립트: 갤러리 더보기 버튼 작동 로직 ✨ -->
+
+  <!-- ✨ 추가된 스크립트: 갤러리 더보기 버튼 작동 로직 ✨ -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       const galleryGrid = document.getElementById("galleryGrid");
@@ -275,5 +282,6 @@
       }
     });
   </script>
+
 </body>
 </html>
