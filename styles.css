@@ -320,7 +320,8 @@ a {
   align-items: center;
   justify-content: center;
   padding: 3.5rem 2.5rem;
-  touch-action: pan-y;
+  overflow: hidden;
+  touch-action: none;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -330,6 +331,15 @@ a {
   max-height: 100%;
   object-fit: contain;
   transition: transform 0.3s ease;
+  transform-origin: center center;
+  touch-action: none;
+  cursor: zoom-in;
+  will-change: transform;
+}
+
+.photo-modal__img.is-zoomed {
+  cursor: grab;
+  transition: transform 0.08s ease-out;
 }
 
 .photo-modal__counter {
