@@ -471,18 +471,30 @@
   let touchEndX = 0;
   let touchStartY = 0;
   let touchEndY = 0;
+  let modalScrollY = 0;
 
   function openPhotoModal(images, index) {
     modalImages = images;
     modalIndex = index;
+    modalScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+
     showModalImage();
-    $('#photoModal').classList.add('is-open');
+
+    const modal = $('#photoModal');
+    modal.style.display = 'flex';
+    modal.classList.add('is-open');
+
     document.body.classList.add('no-scroll');
   }
 
   function closePhotoModal() {
-    $('#photoModal').classList.remove('is-open');
+    const modal = $('#photoModal');
+    modal.classList.remove('is-open');
     document.body.classList.remove('no-scroll');
+
+    requestAnimationFrame(() => {
+      window.scrollTo(0, modalScrollY);
+    });
   }
 
   function showModalImage() {
