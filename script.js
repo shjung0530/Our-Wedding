@@ -465,13 +465,15 @@
      Photo Modal (with swipe)
      ═══════════════════════════════════════════ */
 
-  let modalImages = [];
-  let modalIndex = 0;
-  let touchStartX = 0;
-  let touchEndX = 0;
-  let touchStartY = 0;
-  let touchEndY = 0;
-  let modalScrollY = 0;
+  let modalScale = 1;
+  let modalTranslateX = 0;
+  let modalTranslateY = 0;
+  let pinchStartDistance = 0;
+  let pinchStartScale = 1;
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let isDraggingPhoto = false;
+  let isPinchingPhoto = false;
 
   function openPhotoModal(images, index) {
     modalImages = images;
@@ -480,7 +482,7 @@
 
     showModalImage();
 
-  const modal = $('#photoModal');
+    const modal = $('#photoModal');
     modal.style.display = 'flex';
     modal.classList.add('is-open');
 
@@ -499,9 +501,30 @@
     });
   }
 
+    function getTouchDistance(touches) {
+      const dx = touches[0].clientX - touches[1].clientX;
+      const dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function applyModalZoom() {
+      const img = $('#modalImg');
+      img.style.transform = `translate(${modalTranslateX}px, ${modalTranslateY}px) scale(${modalScale})`;
+    }
+
+    function resetModalZoom() {
+      modalScale = 1;
+      modalTranslateX = 0;
+      modalTranslateY = 0;
+      applyModalZoom();
+    }
+
   function showModalImage() {
     const img = $('#modalImg');
     img.src = modalImages[modalIndex];
+
+    resetModalZoom();  
+
     $('#modalCounter').textContent = `${modalIndex + 1} / ${modalImages.length}`;
 
     $('#modalPrev').style.display = modalIndex > 0 ? '' : 'none';
@@ -538,6 +561,58 @@
 
     // Swipe support
     const container = $('#modalContainer');
+
+    const modalImg = $('#modalImg');
+    modalImg.style.transition = 'transform 0.08s ease-out';
+    modalImg.style.touchAction = 'none';
+
+    modalImg.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2) {
+        isPinchingPhoto = true;
+        pinchStartDistance = getTouchDistance(e.touches);
+        pinchStartScale = modalScale;
+      }
+
+      if (e.touches.length === 1 && modalScale > 1) {
+        isDraggingPhoto = true;
+        dragStartX = e.touches[0].clientX - modalTranslateX;
+        dragStartY = e.touches[0].clientY - modalTranslateY;
+      }
+    }, { passive: false });
+
+    modalImg.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+
+        const distance = getTouchDistance(e.touches);
+        modalScale = Math.min(Math.max(pinchStartScale * (distance / pinchStartDistance), 1), 4);
+
+        if (modalScale === 1) {
+          modalTranslateX = 0;
+          modalTranslateY = 0;
+        }
+
+        applyModalZoom();
+      }
+
+      if (e.touches.length === 1 && isDraggingPhoto && modalScale > 1) {
+        e.preventDefault();
+
+        modalTranslateX = e.touches[0].clientX - dragStartX;
+        modalTranslateY = e.touches[0].clientY - dragStartY;
+
+        applyModalZoom();
+      }
+    }, { passive: false });
+
+    modalImg.addEventListener('touchend', () => {
+      isDraggingPhoto = false;
+      isPinchingPhoto = false;
+
+      if (modalScale <= 1.02) {
+        resetModalZoom();
+      }
+    });
 
     container.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
