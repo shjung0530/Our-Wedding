@@ -480,7 +480,7 @@
 
     showModalImage();
 
-    const modal = $('#photoModal');
+  const modal = $('#photoModal');
     modal.style.display = 'flex';
     modal.classList.add('is-open');
 
@@ -490,6 +490,8 @@
   function closePhotoModal() {
     const modal = $('#photoModal');
     modal.classList.remove('is-open');
+    modal.style.display = 'none';
+
     document.body.classList.remove('no-scroll');
 
     requestAnimationFrame(() => {
